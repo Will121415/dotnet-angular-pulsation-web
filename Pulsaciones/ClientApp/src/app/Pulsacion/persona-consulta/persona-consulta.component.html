@@ -1,0 +1,25 @@
+<div class="container">
+    <h2>Consultar persons</h2>
+    <p>Consulta la lista de <code> personS </code> que se encuentran registradas...!</p>
+    <table class="table">
+      <thead class="thead-dark">
+        <tr>
+          <th>Identificacion</th>
+          <th>Nombre</th>
+          <th>Sexo</th>
+          <th>Edad</th>
+          <th>Pulsacion</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let person of persons; index as i ">
+            <!-- <th scope="row">{{ i + 1 }}</th> -->
+            <td>{{ person.identification }} </td>
+            <td>{{ person.name }}</td>
+            <td>{{person.sex }}</td>
+            <td>{{ person.age }}</td>
+            <td>{{ person.pulsation }}</td>
+        </tr>
+            
+      </tbody>
+    </table>
