@@ -19,7 +19,6 @@ export class PersonaRegistroComponent implements OnInit {
 
 
   add(){
-    console.log(this.person);
     this.personaService.post(this.person).subscribe(p => {
       if (p != null) {
         alert('Persona creada!');

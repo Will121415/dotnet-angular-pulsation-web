@@ -21,7 +21,7 @@ import { FooterComponent } from './footer/footer.component';
     FooterComponent,
     PersonaConsultaComponent,
     PersonaRegistroComponent,
-    FooterComponent
+    FooterComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

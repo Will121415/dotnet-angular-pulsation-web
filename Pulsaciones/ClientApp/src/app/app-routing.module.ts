@@ -9,7 +9,7 @@ import { PersonaRegistroComponent } from './Pulsacion/persona-registro/persona-r
 const routes: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full' },
   {path: 'personaConsulta', component: PersonaConsultaComponent},
-  {path: 'personaRegistro', component: PersonaRegistroComponent}
+  {path: 'personaRegistro', component: PersonaRegistroComponent},
 ];
 
 

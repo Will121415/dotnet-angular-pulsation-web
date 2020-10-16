@@ -28,7 +28,7 @@ namespace Pulsaciones.Controllers
         public ActionResult<PersonViewModel> Save(PersonInputModel personInput)
         {   
             Person person = MapPerson(personInput);
-            var response = personService.Save(person);
+            ServiceResponse  response = personService.Save(person);
 
             if(response.Error) return BadRequest(response.Message);
             return Ok(response.Person);
@@ -61,7 +61,7 @@ namespace Pulsaciones.Controllers
         [HttpGet("{identification}")]
         public ActionResult<PersonViewModel> SearchById(string identification)
         {
-            SearchPersonResponse response =  personService.SearchById(identification);
+            ServiceResponse response =  personService.SearchById(identification);
 
             if(response.Person == null) return NotFound("Persona no encontrada!");
             var personViewModel = new PersonViewModel(response.Person);
@@ -69,16 +69,20 @@ namespace Pulsaciones.Controllers
         }
 
         [HttpDelete("{identification}")]
-        public ActionResult<string> Delete(string identification)
-        {
-            return Ok(personService.Delete(identification));
+        public ActionResult<PersonViewModel> Delete(string identification)
+        {   ServiceResponse response = personService.Delete(identification);
+            if(response.Person == null) return BadRequest(response.Message);
+            return Ok(response.Person);
         }
         
         [HttpPut]
-        public ActionResult<string> Modify(PersonInputModel personInput)
+        public ActionResult<PersonViewModel> Modify(PersonInputModel personInput)
         {
             Person person = MapPerson(personInput);
-            return Ok(personService.Modidy(person));
+            ServiceResponse response =  personService.Modidy(person);
+            if(response.Error) return BadRequest(response.Message);
+            return Ok(response.Person);
+
         }
     }
 }

@@ -21,7 +21,8 @@ export class PersonaService {
 
   get(): Observable<Person[]> 
   {
-    return this.http.get<Person[]>(this.baseUrl + 'api/Person').pipe(tap(_ => this.handleErrorService.log('datos enviados')),
+    return this.http.get<Person[]>(this.baseUrl + 'api/Person').
+      pipe(tap(_ => this.handleErrorService.log('datos consultados')),
       catchError(this.handleErrorService.handleError<Person[]>('Consultar Persona', null))
   );
   }
@@ -33,4 +34,17 @@ export class PersonaService {
  );
  }
 
+ delete(person: Person): Observable<Person> {
+  return this.http.delete<Person>(this.baseUrl + 'api/Person/' + person.identification)
+  .pipe(tap(_ => this.handleErrorService.log('datos eliminados')),
+  catchError(this.handleErrorService.handleError<Person>('Eliminar Persona', new Person()))
+  );
+}
+ modify(person: Person): Observable<Person>
+ {
+   return this.http.put<Person>(this.baseUrl + 'api/Person',person)
+   .pipe(tap(_=> this.handleErrorService.log('datos actualizados')),
+   catchError(this.handleErrorService.handleError<Person>('Modificar Persona', new Person()))
+   );
+ }
 }

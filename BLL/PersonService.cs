@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.IO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,7 +18,7 @@ namespace BLL
             conexion = new ConnectionManager(connectionString);
             repositorio = new PersonRepository(conexion);
         }
-        public SavePersonResponse Save(Person person)
+        public ServiceResponse Save(Person person)
         {
             try
             {
@@ -25,11 +26,11 @@ namespace BLL
                 conexion.Open();
                 repositorio.Save(person);
                 conexion.Close();
-                return new SavePersonResponse(person);
+                return new ServiceResponse(person);
             }
             catch (Exception e)
             {
-                return new SavePersonResponse($"Error de la Aplicacion: {e.Message}");
+                return new ServiceResponse($"Error de la Aplicacion: {e.Message}");
             }
             finally { conexion.Close(); }
         }
@@ -50,32 +51,28 @@ namespace BLL
             finally { conexion.Close(); }
 
         }
-        public string Delete(string Identification)
+        public ServiceResponse Delete(string Identification)
         {
             try
             {
                 conexion.Open();
-                var Person = repositorio.SearchById(Identification);
-                if (Person != null)
+                var person = repositorio.SearchById(Identification);
+                if (person != null)
                 {
-                    repositorio.Delete(Person);
+                    repositorio.Delete(person);
                     conexion.Close();
-                    return ($"El registro {Person.Name} se ha eliminado satisfactoriamente.");
                 }
-                else
-                {
-                    return ($"Lo sentimos, {Identification} no se encuentra registrada.");
-                }
+                return new ServiceResponse(person);
             }
             catch (Exception e)
             {
 
-                return $"Error de la Aplicación: {e.Message}";
+                return new ServiceResponse($"Error de la Aplicación: {e.Message}");
             }
             finally { conexion.Close(); }
 
         }
-        public string Modidy(Person newPerson)
+        public ServiceResponse Modidy(Person newPerson)
         {
             try
             {
@@ -86,22 +83,18 @@ namespace BLL
                 {
                     repositorio.Modify(newPerson);
                     conexion.Close();
-                    return ($"El registro {newPerson.Name} se ha modificado satisfactoriamente.");
                 }
-                else
-                {
-                    return ($"Lo sentimos, {newPerson.Identification} no se encuentra registrada.");
-                }
+                return new ServiceResponse(newPerson);
             }
             catch (Exception e)
             {
 
-                return $"Error de la Aplicación: {e.Message}";
+                return new ServiceResponse($"Error de la Aplicación: {e.Message}");
             }
             finally { conexion.Close(); }
 
         }
-        public SearchPersonResponse SearchById(string Identification)
+        public ServiceResponse SearchById(string Identification)
         {
             try
             {
@@ -109,12 +102,12 @@ namespace BLL
                 conexion.Open();
                 Person person = repositorio.SearchById(Identification);
                 conexion.Close();
-                return new SearchPersonResponse(person);
+                return new ServiceResponse(person);
             }
             catch (Exception e)
             {
                 
-                return new SearchPersonResponse($"Error de la Aplicacion: {e.Message}");
+                return new ServiceResponse($"Error de la Aplicacion: {e.Message}");
             }
             finally { conexion.Close(); }
         }
@@ -167,23 +160,26 @@ namespace BLL
        
     }
 
-    public class SavePersonResponse
+    public class ServiceResponse
     {
-        public bool Error { get; set; }
-        public string Message { get; set; }
-        public Person Person { get; set; }
-        public SavePersonResponse(Person person)
+        public ServiceResponse(Person person)
         {
             Error = false;
             Person = person;
         }
 
-        public SavePersonResponse(string message)
+        public ServiceResponse(string message)
         {
             Error = true;
             Message = message;
         }
+
+        public bool Error { get; set; }
+        public string Message { get; set; }
+        public Person Person { get; set; }
     }
+    
+    
 
     public class ConsultPersonResponse
     {
@@ -203,28 +199,7 @@ namespace BLL
         public string Message { get; set; }
         public IList<Person> Persons { get; set; }
     }
-
-
-    public class SearchPersonResponse
-    {
-        public SearchPersonResponse(Person person)
-        {
-            Error = false;
-            Person =  person;
-        }
-
-        public SearchPersonResponse(string message)
-        {
-            Error = true;
-            Message = message;
-        }
-        public bool Error { get; set; }
-        public string Message { get; set; }
-        public Person Person { get; set; }
-    }
-
-
-
+  
     public class ConteoPersonRespuesta
     {
         public bool Error { get; set; }
